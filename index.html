@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Engine6.0 — Status & Downloads</title>
+<style>
+:root{
+  --bg:#140a1e; --panel:rgba(25,14,36,0.78); --accent:#9b5cff; --accent2:#7c3aed; --muted:#b3a6c9;
+  --radius:14px; font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);color:#f5ebff;display:flex;align-items:center;justify-content:center;}
+canvas#bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+body::before{content:'';position:absolute;inset:0;background:radial-gradient(1000px 600px at 20% 30%,rgba(155,92,255,0.12),transparent),radial-gradient(800px 500px at 80% 70%,rgba(124,58,237,0.10),transparent);animation:pulseBG 6s infinite alternate ease-in-out;z-index:0;}
+@keyframes pulseBG{0%{opacity:0.75;transform:scale(1)}100%{opacity:1;transform:scale(1.06)}}
+
+.panel{background:var(--panel);border-radius:20px;padding:36px;max-width:1000px;width:92%;box-shadow:0 10px 60px rgba(0,0,0,0.55);text-align:left;backdrop-filter:blur(10px);position:relative;z-index:1}
+.headerRow{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.titleBlock{display:flex;flex-direction:column}
+h1{font-size:26px;margin:0 0 6px;color:#fff;}
+p.desc{color:var(--muted);margin:0 0 18px;font-size:14px}
+
+.statusGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:22px;}
+.statusCard{background:rgba(255,255,255,0.03);border-radius:12px;padding:14px;text-align:left;transition:transform .22s ease,box-shadow .22s;box-shadow:0 6px 18px rgba(0,0,0,0.35);}
+.statusCard:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,0.48);}
+.statusHeader{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.statusTitle{font-weight:700;font-size:14px}
+.indicator{width:12px;height:12px;border-radius:50%;background:#22c55e;box-shadow:0 0 10px #22c55e66}
+.indicator.offline{background:#ef4444;box-shadow:0 0 10px #ef444480}
+.progressWrap{margin-top:10px;background:rgba(255,255,255,0.06);border-radius:8px;height:10px;overflow:hidden}
+.progressBar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;transition:width 0.45s ease}
+.small{font-size:12px;color:var(--muted);margin-top:8px}
+
+/* Downloads area */
+.downloadsArea{margin-top:8px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.downloadCard{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.35);display:flex;flex-direction:column;gap:8px;transition:transform .2s ease,box-shadow .2s ease;}
+.downloadCard:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(0,0,0,0.5);}
+.dHead{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.dTitle{font-weight:700;font-size:14px}
+.dMeta{font-size:12px;color:var(--muted)}
+.dNotes{font-size:12px;color:var(--muted);margin-top:6px}
+.dBtn{align-self:flex-end;padding:10px 14px;border-radius:10px;border:none;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(124,58,237,0.18);transition:all .2s ease;}
+.dBtn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(124,58,237,0.35);}
+.dBtn:active{transform:translateY(1px);}
+.dBtn[disabled]{opacity:.55;cursor:not-allowed;transform:none;}
+
+/* footer */
+.footerRow{display:flex;align-items:center;justify-content:space-between;margin-top:18px;gap:8px;flex-wrap:wrap}
+.footerInfo{color:var(--muted);font-size:13px;}
+
+@media (max-width:640px){.panel{padding:22px}}
+</style>
+</head>
+<body>
+<canvas id="bgCanvas"></canvas>
+
+<div class="panel">
+  <div class="headerRow">
+    <div class="titleBlock">
+      <h1>Engine6.0 — Product Status</h1>
+      <p class="desc">Online overview and secured downloads.</p>
+    </div>
+    <div style="text-align:right">
+      <div class="small">Last updated: <span id="time">--:--:--</span></div>
+    </div>
+  </div>
+
+  <div class="statusGrid">
+    <div class="statusCard">
+      <div class="statusHeader"><div class="statusTitle">Advanced API — Engine6.0</div><div class="indicator offline"></div></div>
+      <div class="progressWrap"><div class="progressBar" style="width:2%"></div></div>
+      <div class="small">UNC 2%</div>
+    </div>
+
+    <div class="statusCard">
+      <div class="statusHeader"><div class="statusTitle">Pulse Engine6.0</div><div class="indicator"></div></div>
+      <div class="progressWrap"><div class="progressBar" style="width:100%"></div></div>
+      <div class="small">Performance 100%</div>
+    </div>
+
+    <div class="statusCard">
+      <div class="statusHeader"><div class="statusTitle">Roblox External</div><div class="indicator"></div></div>
+      <div class="progressWrap"><div class="progressBar" style="width:100%"></div></div>
+      <div class="small">Performance 100%</div>
+    </div>
+  </div>
+
+  <div>
+    <h3 style="margin:0 0 10px;color:#fff;font-size:16px">Available Downloads</h3>
+    <div id="downloads" class="downloadsArea"></div>
+  </div>
+
+  <div class="footerRow">
+    <div class="footerInfo">Online — open directly in browser</div>
+  </div>
+</div>
+
+<script>
+const downloads = [
+  {name:"Engine6.0 Awp.gg Remake", version:"1.0.0", size:"45MB", notes:"Full offline installer", download_url:"https://filerift.com/file/5lpxCAeNXk"},
+  {name:"Pulse Engine Installer", version:"6.0", size:"30MB", notes:"Pulse Engine setup", download_url:"https://filerift.com/file/QvzeatqKcA"},
+  {name:"Roblox External", version:"6.0", size:"50MB", notes:"Roblox integration", download_url:"https://filerift.com/file/l7xSDew2pl "}
+];
+
+const downloadsEl = document.getElementById('downloads');
+const timeEl = document.getElementById('time');
+
+function updateTime(){ timeEl.textContent = new Date().toLocaleTimeString(); }
+updateTime();
+setInterval(updateTime, 1000);
+
+function populateDownloads(list){
+  downloadsEl.innerHTML = '';
+  list.forEach(d=>{
+    const card = document.createElement('div');
+    card.className='downloadCard';
+    card.innerHTML = `
+      <div class="dHead">
+        <div class="dTitle">${d.name}</div>
+        <div class="dMeta">v${d.version} | ${d.size}</div>
+      </div>
+      <div class="dNotes">${d.notes}</div>
+      <button class="dBtn">Download</button>
+    `;
+    const btn = card.querySelector('button');
+    btn.addEventListener('click',()=> window.open(d.download_url,'_blank'));
+    downloadsEl.appendChild(card);
+  });
+}
+
+populateDownloads(downloads);
+
+/* Background animation */
+const canvas=document.getElementById('bgCanvas');
+const ctx=canvas.getContext('2d');
+let w,h,particles;
+function resize(){w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight;initParticles();}
+window.addEventListener('resize',resize);
+function initParticles(){particles=[];for(let i=0;i<70;i++){particles.push({x:Math.random()*w,y:Math.random()*h,dx:(Math.random()-0.5)*0.5,dy:(Math.random()-0.5)*0.5});}}
+function animate(){
+  ctx.clearRect(0,0,w,h);
+  for(let i=0;i<particles.length;i++){
+    const p=particles[i];
+    p.x+=p.dx; p.y+=p.dy;
+    if(p.x<0||p.x>w)p.dx*=-1;
+    if(p.y<0||p.y>h)p.dy*=-1;
+    ctx.beginPath(); ctx.arc(p.x,p.y,1.6,0,Math.PI*2); ctx.fillStyle='rgba(155,92,255,0.8)'; ctx.fill();
+    for(let j=i+1;j<particles.length;j++){
+      const p2=particles[j];
+      const dist=Math.hypot(p.x-p2.x,p.y-p2.y);
+      if(dist<120){ctx.strokeStyle='rgba(124,58,237,'+(1-dist/120)*0.4+')'; ctx.lineWidth=0.6; ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(p2.x,p2.y); ctx.stroke();}
+    }
+  }
+  requestAnimationFrame(animate);
+}
+resize();animate();
+</script>
+</body>
+</html>
